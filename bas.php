@@ -1013,8 +1013,11 @@ foreach ([
 
 // Direct Script Download endpoint: BooleanAst.php?download=1&language=csharp&expression=...
 if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
-    require_once __DIR__ . '/App/MCP/McpGateway.php';
-    \App\MCP\McpGateway::intercept(__FILE__);
+    $gateway = __DIR__ . '/App/MCP/McpGateway.php';
+    if (is_file($gateway)) {
+        require_once $gateway;
+        \App\MCP\McpGateway::intercept(__FILE__);
+    }
 }
 
 if (php_sapi_name() !== 'cli' && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__ && isset($_GET['download'])) {
